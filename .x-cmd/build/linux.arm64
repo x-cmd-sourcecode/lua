@@ -1,0 +1,9 @@
+
+(
+    export LUA_SHARED_LIB=liblua.so
+
+    cd "$(x wsroot)/code"
+    make linux-readline
+    INSTALL_TOP="$(x wsroot)/release/linux.arm64" make install
+    make clean
+)
