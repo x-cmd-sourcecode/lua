@@ -1,0 +1,6 @@
+
+[ -d "readline-8.2" ] || {
+    curl  https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz >readline-8.2.tar.gz
+    x uz readline-8.2.tar.gz
+    rm readline-8.2.tar.gz
+} 
