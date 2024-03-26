@@ -44,7 +44,7 @@ LUAC_T=	luac
 LUAC_O=	luac.o
 
 ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O)
-ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
+ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T) $(LUA_SHARED_LIB)
 ALL_A= $(LUA_A)
 
 # Targets start here.
@@ -56,21 +56,29 @@ o:	$(ALL_O)
 
 a:	$(ALL_A)
 
+# https://github.com/macports/macports-ports/blob/master/lang/lua/files/patch-src-Makefile.diff
+%.dylib: $(BASE_O)
+	$(CC) -o $@ -dynamiclib $(LDFLAGS) $^ 
+%.so: $(BASE_O)
+	$(CC) -o $@ -shared $(LDFLAGS) $^ -ldl -lm -Wl,-soname,$(LUA_SHARED_LIB)
+
 $(LUA_A): $(BASE_O)
 	$(AR) $@ $(BASE_O)
 	$(RANLIB) $@
 
 $(LUA_T): $(LUA_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
+# $(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_SHARED_LIB) $(LIBS)
 
 $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
+# $(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_SHARED_LIB) $(LIBS)
 
 test:
 	./$(LUA_T) -v
 
 clean:
-	$(RM) $(ALL_T) $(ALL_O)
+	$(RM) $(ALL_T) $(ALL_O) $(LUA_SHARED_LIB)
 
 depend:
 	@$(CC) $(CFLAGS) -MM l*.c
@@ -126,7 +134,7 @@ linux-noreadline:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX" SYSLIBS="-Wl,-E -ldl"
 
 linux-readline:
-	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline"
+	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline" 
 
 Darwin macos macosx:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-lreadline"
