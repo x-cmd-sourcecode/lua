@@ -81,5 +81,4 @@ build lua:
   任务:
     - 把 readline 编译到 lua 中
     - 检查 win 的 dll 是怎么布置的: 从 sourceforge.net 下载的二进制包有 lua54.dll,lua54.exe,luac54.exe,wlua54.exe
-    - 检查官方提供的 win lua 是 mingw 还是 msvc: 
-      - exe文件: 
+    - 检查官方提供的 win lua 是 mingw 还是 msvc: mingw 编译（lib 提供了 msvc 和 mingw 两种编译的库，包括动态库和静态库）
