@@ -85,9 +85,11 @@ build lua:
     - 检查 win 的 dll 是怎么布置的: 从 sourceforge.net 下载的二进制包有 lua54.dll,lua54.exe,luac54.exe,wlua54.exe
     - 检查官方提供的 win lua 是 mingw 还是 msvc: mingw 编译（lib 提供了 msvc 和 mingw 两种编译的库，包括动态库和静态库）
 
-    - 把 readline 编译到 lua 中:
+    - 把 readline 编译到 lua 中:          # 已完成，具体请参考 下述的 编译实例
       mac:
         参考-系统安装 readline : readline 库通常随 Xcode 命令行工具一起安装 `xcode-select -p`
+
+        
 
       linux: # debian:stretch 镜像
         参考-系统安装 readline : 
@@ -100,6 +102,7 @@ build lua:
           - readline: 
             - (cd dep/readline-8.2 && ./configure && make && make install && make clean && ldconfig)
             - build lua 依赖的是 libreadline.so.8
+      
 
 依赖:
   mac:
@@ -116,43 +119,48 @@ build lua:
   - 进入 Lua 命令行界面
   - 按上下箭头键，如果能查看之前输入的命令，则说明 readline 功能起效
 
-# LD_LIBRARY_PATH
-# CPATH
-# LIBRARY_PATH
-# PKG_CONFIG_PATH
+---
+编译实例: 
+  linux.arm64: |
+    ```sh
+    # x-cmd-build 为 x-cmd-builder/build 使用的 build 镜像
+    docker rm -f lua_build
+    docker run -it -d --name lua_build x-cmd-build
+    x docker setup lua_build
+    docker cp ../lua lua_build:/lua/
+    docker exec -it lua_build bash
 
-编译实例: |
-  ```sh
-  # x-cmd-build 为 x-cmd-builder/build 使用的 build 镜像
-  docker rm -f lua_build
-  docker run -it -d --name lua_build x-cmd-build
-  x docker setup lua_build
-  docker cp ../lua lua_build:/lua/
-  docker exec -it lua_build bash
+    # apt install -y patchelf
 
-  # apt install -y patchelf
+    # 安装依赖库
+    lua_path=/lua
+    release_tmp=linux.arm64
+    (cd "$lua_path/dep" && . ./download)
+    (cd "$lua_path/dep/ncurses-6.2" && ./configure && make && make install && make clean && ldconfig)
+    (cd "$lua_path/dep/readline-8.2" && ./configure && make && make install && make clean && ldconfig)
 
-  # 安装依赖库
-  lua_path=/lua
-  release_tmp=linux.arm64
-  (cd "$lua_path/dep" && . ./download)
-  (cd "$lua_path/dep/ncurses-6.2" && ./configure && make && make install && make clean && ldconfig)
-  (cd "$lua_path/dep/readline-8.2" && ./configure && make && make install && make clean && ldconfig)
+    # 编译 lua
+    (cd "$lua_path" && xws build/$release_tmp)
 
-  # 编译 lua
-  (cd "$lua_path" && xws build/$release_tmp)
+    # 调整目录和依赖路径
+    # (
+    #   release_path_tmp="$lua_path/release/$release_tmp/"
+    #   cd "$release_path_tmp/bin"
+    #   x cp /usr/local/lib/libreadline* "$release/lib/readline/"
+    #   patchelf --set-rpath '$ORIGIN/../lib/readline' lua
+    #   patchelf --set-rpath '$ORIGIN/../lib/readline' luac
+    # )
 
-  # 调整目录和依赖路径
-  # (
-  #   release_path_tmp="$lua_path/release/$release_tmp/"
-  #   cd "$release_path_tmp/bin"
-  #   x cp /usr/local/lib/libreadline* "$release/lib/readline/"
-  #   patchelf --set-rpath '$ORIGIN/../lib/readline' lua
-  #   patchelf --set-rpath '$ORIGIN/../lib/readline' luac
-  # )
+    # 将编译好的 lua 取出
+    release_tmp=linux.arm64
+    x mkdirp ./release/
+    docker cp lua_build:/lua/release/$release_tmp/ ./release
+    ```
+  darwin: | 
+    ```sh
+    tmp_path="$(x wsroot)/.tmp"
+    (cd "./dep/readline-8.2" && ./configure --prefix="$tmp_path" && make && make install && make clean && ldconfig)
 
-  # 将编译好的 lua 取出
-  release_tmp=linux.arm64
-  x mkdirp ./release/
-  docker cp lua_build:/lua/release/$release_tmp/ ./release
-  ```
+    xws build/darwin.arm64
+    x rmrf "$tmp_path"
+    ```

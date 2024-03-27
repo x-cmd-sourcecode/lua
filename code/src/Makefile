@@ -140,7 +140,8 @@ linux-readline:
 #	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline" 
 
 Darwin macos macosx:
-	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-lreadline"
+	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-Wl,-force_load,/Users/liaoxuanbin/xbuild/lua/.tmp/lib/libreadline.a -lncurses"
+#	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-lreadline"
 
 mingw:
 	$(MAKE) "LUA_A=lua54.dll" "LUA_T=lua.exe" \
