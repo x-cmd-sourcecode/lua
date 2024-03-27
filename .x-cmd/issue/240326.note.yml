@@ -125,7 +125,7 @@ build lua:
   ```sh
   # x-cmd-build 为 x-cmd-builder/build 使用的 build 镜像
   docker rm -f lua_build
-  docker run -it -d --name temp x-cmd-build
+  docker run -it -d --name lua_build x-cmd-build
   x docker setup lua_build
   docker cp ../lua lua_build:/lua/
   docker exec -it lua_build bash
@@ -136,8 +136,8 @@ build lua:
   lua_path=/lua/
   release_tree=linux.arm64
   (cd "$lua_path/dep" && . ./download)
-  (cd "$lua_path/dedep/ncurses-6.2" && ./configure && make && make install && make clean && ldconfig)
-  (cd "$lua_path/dedep/readline-8.2" && ./configure && make && make install && make clean && ldconfig)
+  (cd "$lua_path/dep/ncurses-6.2" && ./configure && make && make install && make clean && ldconfig)
+  (cd "$lua_path/dep/readline-8.2" && ./configure && make && make install && make clean && ldconfig)
 
   # 编译 lua
   (cd "$lua_path" && xws build/$release_tree)
@@ -153,5 +153,6 @@ build lua:
 
   # 将编译好的 lua 取出
   release_tree=linux.arm64
-  docker cp temp:/lua/release/$release_tree ./release/$release_tree
+  x mkdirp ./release/$release_tree
+  docker cp lua_build:/lua/release/$release_tree ./release
   ```
