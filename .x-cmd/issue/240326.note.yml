@@ -74,6 +74,7 @@ pkg-conf,pkgconf:
 readline: 
   - 一个库，它提供了在命令行中进行交互式输入的功能。它可以处理用户在命令行中的输入，并提供诸如命令历史记录、自动补全、编辑功能等特性，以增强用户在命令行界面中的交互体验。
   - 依赖 ncurses 库
+  - readline 8.2 依赖 ncurses-5.2？
 
 ---
 # https://github.com/macports/macports-ports/blob/master/lang/lua/files/patch-src-Makefile.diff
