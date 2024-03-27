@@ -168,3 +168,52 @@ build lua:
     xws build/darwin.arm64
     x rmrf "$tmp_path"
     ```
+
+
+
+---
+xcmd编译的lua:
+  brew lua: |
+    ```sh
+    ├── bin
+    │  ├── lua
+    │  ├── lua-5.4 -> lua
+    │  ├── lua5.4 -> lua
+    │  ├── luac
+    │  ├── luac-5.4 -> luac
+    │  └── luac5.4 -> luac
+    ├── include
+    │  ├── lua
+    │  │  ├── lauxlib.h
+    │  │  ├── lua.h
+    │  │  ├── lua.hpp
+    │  │  ├── luaconf.h
+    │  │  └── lualib.h
+    │  └── lua5.4
+    │     ├── lauxlib.h -> ../lua/lauxlib.h
+    │     ├── lua.h -> ../lua/lua.h
+    │     ├── lua.hpp -> ../lua/lua.hpp
+    │     ├── luaconf.h -> ../lua/luaconf.h
+    │     └── lualib.h -> ../lua/lualib.h
+    ├── INSTALL_RECEIPT.json
+    ├── lib
+    │  ├── liblua.5.4.6.dylib -> liblua.dylib
+    │  ├── liblua.5.4.dylib -> liblua.dylib
+    │  ├── liblua.a
+    │  ├── liblua.dylib
+    │  ├── liblua5.4.dylib -> liblua.5.4.dylib
+    │  └── pkgconfig
+    │     ├── lua-5.4.pc -> lua.pc
+    │     ├── lua.pc
+    │     └── lua5.4.pc -> lua.pc
+    ├── README
+    └── share
+      └── man
+          └── man1
+            ├── lua.1
+            └── luac.1
+    ```
+  apt lua: |
+    ```sh
+
+    ```
