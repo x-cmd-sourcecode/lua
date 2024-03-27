@@ -88,9 +88,6 @@ build lua:
     - 把 readline 编译到 lua 中:          # 已完成，具体请参考 下述的 编译实例
       mac:
         参考-系统安装 readline : readline 库通常随 Xcode 命令行工具一起安装 `xcode-select -p`
-
-        
-
       linux: # debian:stretch 镜像
         参考-系统安装 readline : 
           - apt-get install libreadline-dev 
@@ -102,7 +99,14 @@ build lua:
           - readline: 
             - (cd dep/readline-8.2 && ./configure && make && make install && make clean && ldconfig)
             - build lua 依赖的是 libreadline.so.8
-      
+
+      把 readline 压入 lua 后的大小对比:
+        非压缩包:
+          linux.arm64: 1.4M --> 2.3M
+          darwin.arm64: 1.2M --> 1.8M
+        压缩包:
+          linux.arm64: 208k --> 480k
+          darwin.arm64: 176k --> 308k    
 
 依赖:
   mac:

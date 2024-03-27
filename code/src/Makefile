@@ -137,7 +137,6 @@ linux-noreadline:
 linux-readline:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -Wl,-Bstatic -lreadline -Wl,-Bdynamic -lncurses"
 #	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline -lncurses"
-#	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX -DLUA_USE_READLINE" SYSLIBS="-Wl,-E -ldl -lreadline" 
 
 Darwin macos macosx:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-Wl,-force_load,/Users/liaoxuanbin/xbuild/lua/.tmp/lib/libreadline.a -lncurses"
