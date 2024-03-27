@@ -71,7 +71,9 @@ pkg-conf,pkgconf:
     - https://people.freedesktop.org/~dbn/pkg-config-guide.html
     - https://zhuanlan.zhihu.com/p/661282452
   
-readline: 一个库，它提供了在命令行中进行交互式输入的功能。它可以处理用户在命令行中的输入，并提供诸如命令历史记录、自动补全、编辑功能等特性，以增强用户在命令行界面中的交互体验。
+readline: 
+  - 一个库，它提供了在命令行中进行交互式输入的功能。它可以处理用户在命令行中的输入，并提供诸如命令历史记录、自动补全、编辑功能等特性，以增强用户在命令行界面中的交互体验。
+  - 依赖 ncurses 库
 
 ---
 # https://github.com/macports/macports-ports/blob/master/lang/lua/files/patch-src-Makefile.diff
@@ -79,6 +81,35 @@ readline: 一个库，它提供了在命令行中进行交互式输入的功能�
 build lua:
   原则: 以 Linux 为准
   任务:
-    - 把 readline 编译到 lua 中
     - 检查 win 的 dll 是怎么布置的: 从 sourceforge.net 下载的二进制包有 lua54.dll,lua54.exe,luac54.exe,wlua54.exe
     - 检查官方提供的 win lua 是 mingw 还是 msvc: mingw 编译（lib 提供了 msvc 和 mingw 两种编译的库，包括动态库和静态库）
+
+    - 把 readline 编译到 lua 中:
+      mac:
+        参考-系统安装 readline : readline 库通常随 Xcode 命令行工具一起安装 `xcode-select -p`
+
+      linux: # debian:stretch 镜像
+        参考-系统安装 readline : apt-get install libreadline-dev
+        安装依赖:
+          - ncurses: apt install libncurses-dev
+          - readline: (cd dep/readline-8.2 && ./configure && make && make install && make clean)
+
+依赖:
+  mac:
+    - 查看: otool -L <文件路径>
+    - 修改: install_name_tool -change "${libdir}" "@executable_path/../lib/${libdir##*/}" "${bin_path"
+  linux:
+    - 查看: ldd <文件路径>
+    - 修改: 
+      - patchelf --set-rpath '$ORIGIN/../lib' "${bin_name}"   # 可行，将libreadline.so.7移动到 lib 目录
+
+      - patchelf --replace-needed libreadline.so.7 '$ORIGIN/../lib/libreadline.so.7' "${bin_name}"
+
+测试是否成功将 readline 编译到 lua 中:
+  - 进入 Lua 命令行界面
+  - 按上下箭头键，如果能查看之前输入的命令，则说明 readline 功能起效
+
+# LD_LIBRARY_PATH
+# CPATH
+# LIBRARY_PATH
+# PKG_CONFIG_PATH
