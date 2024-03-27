@@ -124,9 +124,15 @@ build lua:
 tmp: |
   ```sh
   pkg_test_init x-cmd-build       # docker cp ../lua temp:/lua/
-  apt install -y libncurses-dev
+  apt install -y patchelf
+  
   cd lua
+  (cd dep/ncurses-6.2 && ./configure && make && make install && make clean && ldconfig)
   (cd dep/readline-8.2 && ./configure && make && make install && make clean && ldconfig)
   xws build/linux.arm64
-  ./release/linux.arm64/bin/lua
+
+  cd ./release/linux.arm64/bin/
+  x cp /usr/local/lib/libreadline* ./lib/readline/
+  patchelf --set-rpath '$ORIGIN/../lib/readline' lua
+  patchelf --set-rpath '$ORIGIN/../lib/readline' luac
   ```
