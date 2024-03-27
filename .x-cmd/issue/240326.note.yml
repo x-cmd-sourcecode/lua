@@ -130,29 +130,29 @@ build lua:
   docker cp ../lua lua_build:/lua/
   docker exec -it lua_build bash
 
-  apt install -y patchelf
+  # apt install -y patchelf
 
   # 安装依赖库
-  lua_path=/lua/
-  release_tree=linux.arm64
+  lua_path=/lua
+  release_tmp=linux.arm64
   (cd "$lua_path/dep" && . ./download)
   (cd "$lua_path/dep/ncurses-6.2" && ./configure && make && make install && make clean && ldconfig)
   (cd "$lua_path/dep/readline-8.2" && ./configure && make && make install && make clean && ldconfig)
 
   # 编译 lua
-  (cd "$lua_path" && xws build/$release_tree)
+  (cd "$lua_path" && xws build/$release_tmp)
 
   # 调整目录和依赖路径
-  (
-    release_path="$lua_path/release/$release_tree/"
-    cd "$release_path/bin"
-    x cp /usr/local/lib/libreadline* "$release/lib/readline/"
-    patchelf --set-rpath '$ORIGIN/../lib/readline' lua
-    patchelf --set-rpath '$ORIGIN/../lib/readline' luac
-  )
+  # (
+  #   release_path_tmp="$lua_path/release/$release_tmp/"
+  #   cd "$release_path_tmp/bin"
+  #   x cp /usr/local/lib/libreadline* "$release/lib/readline/"
+  #   patchelf --set-rpath '$ORIGIN/../lib/readline' lua
+  #   patchelf --set-rpath '$ORIGIN/../lib/readline' luac
+  # )
 
   # 将编译好的 lua 取出
-  release_tree=linux.arm64
-  x mkdirp ./release/$release_tree
-  docker cp lua_build:/lua/release/$release_tree ./release
+  release_tmp=linux.arm64
+  x mkdirp ./release/
+  docker cp lua_build:/lua/release/$release_tmp/ ./release
   ```
