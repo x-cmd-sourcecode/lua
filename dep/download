@@ -4,3 +4,9 @@
     x uz readline-8.2.tar.gz
     rm readline-8.2.tar.gz
 } 
+
+[ -d "ncurses-6.2" ] || {
+    curl  https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz >ncurses-6.2.tar.gz
+    x uz ncurses-6.2.tar.gz
+    rm ncurses-6.2.tar.gz
+} 
