@@ -90,10 +90,14 @@ build lua:
         参考-系统安装 readline : readline 库通常随 Xcode 命令行工具一起安装 `xcode-select -p`
 
       linux: # debian:stretch 镜像
-        参考-系统安装 readline : apt-get install libreadline-dev
-        安装依赖:
-          - ncurses: apt install libncurses-dev
-          - readline: (cd dep/readline-8.2 && ./configure && make && make install && make clean)
+        参考-系统安装 readline : 
+          - apt-get install libreadline-dev 
+          - build lua 依赖的是 libreadline.so.7
+        源代码安装依赖:
+          - ncurses: apt install -y libncurses-dev # 查看版本 pkg-config --modversion ncurses
+          - readline: 
+            - (cd dep/readline-8.2 && ./configure && make && make install && make clean && ldconfig)
+            - build lua 依赖的是 libreadline.so.8
 
 依赖:
   mac:
@@ -114,3 +118,13 @@ build lua:
 # CPATH
 # LIBRARY_PATH
 # PKG_CONFIG_PATH
+
+tmp: |
+  ```sh
+  pkg_test_init x-cmd-build       # docker cp ../lua temp:/lua/
+  apt install -y libncurses-dev
+  cd lua
+  (cd dep/readline-8.2 && ./configure && make && make install && make clean && ldconfig)
+  xws build/linux.arm64
+  ./release/linux.arm64/bin/lua
+  ```
