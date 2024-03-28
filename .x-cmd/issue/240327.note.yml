@@ -2,6 +2,29 @@
     编译 readline 时有报出如下错误
     rltty.c:83:1: warning: a function definition without a prototype is deprecated in all versions of C and is not supported in C2x [-Wdeprecated-non-prototype]
 
+lua 生态:
+  LUA_PATH:
+    介绍: Lua 解释器用来搜索 Lua 模块的路径。当 Lua 解释器加载一个 Lua 脚本或模块时，它会根据 LUA_PATH 中定义的路径去查找对应的 Lua 文件
+    lua 模块加载机制:
+      - 没有设置 LUA_PATH 时: 使用编译时定义的默认路径，该值可以在启动 lua 后使用 `package.path` 查看 （在源码的 luaconf.h 里定义了编译时的默认路径）
+      - LUA_PATH 初始化流程: 
+        - 当 Lua 启动后，会以环境变量 LUA_PATH 的值来初始这个环境变量。如果没有找到该环境变量，则使用一个编译时定义的默认路径来初始化。
+        - 如果脚本或模块没有在当前目录下，Lua 解释器会按顺序搜索 LUA_PATH 中定义的路径，直到找到对应的模块文件或搜索完所有路径
+      - LUA_PATH 的值: 一个由 `;` (分号)分隔的路径列表，任何 ”;;”在环境变量的值中由默认路径替换。类似于环境变量 PATH
+      - LUA_PATH 的查找顺序: 查找顺序与 PATH 一致
+  LUA_CPATH:
+    介绍: 大体跟 LUA_PATH 的策略类似，它搜索的是 so 或 dll 类型的文件
+    加载机制: 
+      - 没有设置 LUA_CPATH 时: 使用编译时定义的默认路径，该值可以在启动 lua 后使用 `package.cpath` 查看 （在源码的 luaconf.h 里定义了编译时的默认路径）
+      - C包: 
+        - 与 Lua 中写包不同，C 包在使用以前必须首先加载并连接，在大多数系统中最容易的实现方式是通过动态连接库机制
+        - Lua在一个叫 loadlib 的函数内提供了所有的动态连接的功能
+  
+  其他: 
+    - 从 Lua 5.1 开始，Lua 加入了标准的模块管理机制
+    - 调用 package.loadfile 来加载模块
+    - 通过 package.loadlib 来加载 so 或 dll 类型的文件
+
 lua 文件布局: |
     ```sh
     .
