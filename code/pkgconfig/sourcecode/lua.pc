@@ -1,0 +1,24 @@
+# https://github.com/macports/macports-ports/blob/master/lang/lua/files/lua.pc
+# code/Makefile
+
+V= 5.4
+R= ${V}.6
+
+prefix= @INSTALL_TOP@
+INSTALL_BIN= ${prefix}/bin
+INSTALL_INC= ${prefix}/include
+INSTALL_LIB= ${prefix}/lib
+INSTALL_MAN= ${prefix}/man/man1
+INSTALL_LMOD= ${prefix}/share/lua/$V
+INSTALL_CMOD= ${prefix}/lib/lua/$V
+
+prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua@LANGUAGE@ -lm
+Cflags: -I${includedir}

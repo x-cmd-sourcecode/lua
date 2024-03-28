@@ -6,4 +6,6 @@
     make linux-readline
     INSTALL_TOP="$(x wsroot)/release/linux.arm64" make install
     make clean
+
+    x cp "$(x wsroot)/code/pkgconfig/x-cmd/lua.pc" "$(x wsroot)/release/linux.arm64/pkgconfig/"
 )

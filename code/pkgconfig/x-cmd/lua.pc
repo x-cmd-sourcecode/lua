@@ -1,0 +1,24 @@
+# reference: brew
+
+V= 5.4
+R= ${V}.6
+
+# TODO: The prefix variable is modified in the x-cmd pkg populate step
+prefix= @XCMD_LUA_INSTALL_PATH@
+INSTALL_BIN= ${prefix}/bin
+INSTALL_INC= ${prefix}/include/lua
+INSTALL_LIB= ${prefix}/lib
+INSTALL_MAN= ${prefix}/share/man/man1
+INSTALL_LMOD= ${prefix}/share/lua/$V
+INSTALL_CMOD= ${prefix}/lib/lua/$V
+
+prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua -lm
+Cflags: -I${includedir}

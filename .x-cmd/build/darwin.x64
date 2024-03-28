@@ -1,0 +1,11 @@
+
+(
+    export LUA_SHARED_LIB=liblua.dylib
+
+    cd "$(x wsroot)/code"
+    make
+    INSTALL_TOP="$(x wsroot)/release/darwin.x64" make install
+    make clean
+
+    x cp "$(x wsroot)/code/pkgconfig/x-cmd/lua.pc" "$(x wsroot)/release/darwin.x64/pkgconfig/"
+)
