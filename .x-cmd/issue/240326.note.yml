@@ -1,4 +1,7 @@
 ---
+lua 官方提供的二进制包下载源: https://luabinaries.sourceforge.net/download.html
+lua 官方文档: https://luabinaries.sourceforge.net/manual.html
+---
 make:
   make 命令: 
     - "[环境变量] make [参数] [构建选项] [目标]"

@@ -31,4 +31,21 @@ lua 文件布局: |
             └── luac.1
     ```
 
+---
+lua - lua54 - lua5.4 命名的规范:
+  源码编译: 
+    - 实体: lua,luac
+    - 无软链接
+  官方|sourceforge.net: 
+    - 实体: lua54,luac54 # win: lua54.exe,luac54.exe,wlua54.exe
+    - 无软链接
+  brew: 
+    - 实体: lua,luac
+    - 软链接: lua5.4,luac5.4,lua-5.4,luac-5.4
+  apt:
+    - 实体: lua5.4,luac5.4
+    - 无软链接
+
+luarocks:
+  安装:
 

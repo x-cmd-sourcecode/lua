@@ -1,0 +1,7 @@
+lua 官方提供的 win lua 包:
+  bin: 相比于 linux 和 mac 多提供了 lua.dll 和 wlua.exe
+  lua.dll: lua.exe 和 wlua.exe 都依赖于 lua.dll
+  wlua.exe: 
+    - https://luabinaries.sourceforge.net/manual.html
+
+
