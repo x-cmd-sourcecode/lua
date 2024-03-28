@@ -1,0 +1,34 @@
+在 x64 体系编译时: |
+    编译 readline 时有报出如下错误
+    rltty.c:83:1: warning: a function definition without a prototype is deprecated in all versions of C and is not supported in C2x [-Wdeprecated-non-prototype]
+
+lua 文件布局: |
+    ```sh
+    .
+    ├── bin
+    │  ├── lua
+    │  └── luac
+    ├── include              # lua 头文件
+    │  └── lua
+    │     ├── lauxlib.h
+    │     ├── lua.h
+    │     ├── lua.hpp
+    │     ├── luaconf.h
+    │     └── lualib.h
+    ├── lib
+    │  ├── liblua.a           # 静态链接库
+    │  ├── liblua.dylib       # 动态链接库: .dylib/.so/.dll
+    │  ├── lua                # Lua 的 C 模块（动态链接库文件）安装目录
+    │  │  └── 5.4
+    │  └── pkgconfig          # pkg-config 配置文件，提供一种简单的方式来查询和使用库的信息
+    │     └── lua.pc
+    └── share
+      ├── lua                 # Lua 模块（Lua 脚本文件）安装目录
+      │  └── 5.4
+      └── man                 # lua man 文档
+          └── man1
+            ├── lua.1
+            └── luac.1
+    ```
+
+

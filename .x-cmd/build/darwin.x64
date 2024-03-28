@@ -7,5 +7,5 @@
     INSTALL_TOP="$(x wsroot)/release/darwin.x64" make install
     make clean
 
-    x cp "$(x wsroot)/code/pkgconfig/x-cmd/lua.pc" "$(x wsroot)/release/darwin.x64/pkgconfig/"
+    x cp "$(x wsroot)/code/pkgconfig/x-cmd/lua.pc" "$(x wsroot)/release/darwin.x64/lib/pkgconfig/"
 )
