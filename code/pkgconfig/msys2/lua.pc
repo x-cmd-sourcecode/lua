@@ -1,3 +1,5 @@
+# ref: https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-lua/lua.pc
+
 V=%VER%
 R=%REL%
 

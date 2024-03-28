@@ -1,0 +1,11 @@
+
+(
+    export LUA_SHARED_LIB=lualib.dll.a
+
+    cd "$(x wsroot)/code"
+    make mingw
+    TO_BIN="lua.exe luac.exe lua54.dll" INSTALL_TOP="$(x wsroot)/release/win.x64" make install
+    make clean
+
+    x cp "$(x wsroot)/code/pkgconfig/x-cmd/lua.pc" "$(x wsroot)/release/win.x64/lib/pkgconfig/"
+)

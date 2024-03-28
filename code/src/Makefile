@@ -143,8 +143,8 @@ Darwin macos macosx:
 #	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_MACOSX -DLUA_USE_READLINE" SYSLIBS="-lreadline"
 
 mingw:
-	$(MAKE) "LUA_A=lua54.dll" "LUA_T=lua.exe" \
-	"AR=$(CC) -shared -o" "RANLIB=strip --strip-unneeded" \
+	$(MAKE) "LUA_A=lua54.dll" "LUA_LA=liblua.dll.a" "LUA_T=lua.exe" \
+	"AR=$(CC) -shared -Wl,--out-implib,liblua.dll.a -o" "RANLIB=strip --strip-unneeded" \
 	"SYSCFLAGS=-DLUA_BUILD_AS_DLL -DLUA_USE_READLINE" SYSLIBS="-Wl,-Bstatic -lreadline -Wl,-Bstatic -lncurses" \
 	"SYSLDFLAGS=-s" lua.exe
 	$(MAKE) "LUAC_T=luac.exe" luac.exe
