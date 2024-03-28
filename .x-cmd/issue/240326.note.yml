@@ -66,6 +66,20 @@ make:
 
 pkg-conf,pkgconf:
   介绍: 用于读取特定的.pc（Package Config）文件中库（libraries）的编译和链接信息命的令行工具，如在项目中使用外部库时，可以以此读取库的头文件（header files）和库文件（library files）的位置。
+  实例: |
+    ```sh
+    brew install pkgconf
+
+    # 获取 .pc 文件的值
+    # PKG_CONFIG_PATH 变量告诉 pkg-config 工具在哪里查找 .pc 文件
+
+    export PKG_CONFIG_PATH=/lua_install_path/pkgconfig:$PKG_CONFIG_PATH
+    pkgconf --variable=V lua 
+    pkgconf --modversion lua
+    pkgconf --libs lua
+    pkgconf --cflags lua
+    ```
+
   参考:
     - https://github.com/pkgconf/pkgconf
     - https://people.freedesktop.org/~dbn/pkg-config-guide.html
@@ -134,8 +148,6 @@ build lua:
     docker cp ../lua lua_build:/lua/
     docker exec -it lua_build bash
 
-    # apt install -y patchelf
-
     # 安装依赖库
     lua_path=/lua
     release_tmp=linux.arm64
@@ -147,6 +159,7 @@ build lua:
     (cd "$lua_path" && xws build/$release_tmp)
 
     # 调整目录和依赖路径
+    # apt install -y patchelf
     # (
     #   release_path_tmp="$lua_path/release/$release_tmp/"
     #   cd "$release_path_tmp/bin"
@@ -169,3 +182,7 @@ build lua:
     x rmrf "$tmp_path"
     ```
 
+---
+x-cmd pkg 安装 x-cmd 编译好的 lua 时需要在 populate 中处理的事:
+  - 修改 pkgconfig: 将 prefix 的值改为安装路径（pc 文件的用途在上述 pkg-conf,pkgconf 中有说明）
+  - 生成 shim_bin: 要添加 LUA_PATH 
