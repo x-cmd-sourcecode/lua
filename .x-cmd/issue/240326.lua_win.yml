@@ -2,6 +2,14 @@ lua 官方提供的 win lua 包:
   bin: 相比于 linux 和 mac 多提供了 lua.dll 和 wlua.exe
   lua.dll: lua.exe 和 wlua.exe 都依赖于 lua.dll
   wlua.exe: 
-    - https://luabinaries.sourceforge.net/manual.html
-
-
+    - 介绍文章: https://luabinaries.sourceforge.net/manual.html
+    - 如何 bilud:
+      - 步骤:
+        - |
+          1. 更改 lua.c 文件 --  在文件最后一行添加 
+          ```
+          int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+          { return main(__argc, __argv); }
+          ```
+        - 2. make MYLDFLAGS=-mwindows mingw  
+      - ref: https://gist.github.com/Egor-Skriptunoff/14468ecf9257e46c71c2477f0951c51e
